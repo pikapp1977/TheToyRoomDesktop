@@ -1,0 +1,57 @@
+=====================================
+TheToyRoomDesktop - Local Build
+========================================
+
+Working directory: C:\Users\Admin\Documents\TheToyRoomDesktop
+
+[OK] .NET SDK found
+10.0.100-rc.2.25502.107
+
+[OK] Project file found
+
+[1/5] Cleaning previous builds...
+[OK] Clean complete
+
+[2/5] Restoring NuGet packages...
+Restore complete (0.3s)
+
+Build succeeded in 0.5s
+[OK] Restore complete
+
+[3/5] Building Debug configuration...
+This will show any compilation errors...
+
+Restore complete (0.2s)
+    info NETSDK1057: You are using a preview version of .NET. See: https://aka.ms/dotnet-support-policy
+  TheToyRoomDesktop net8.0-windows failed with 16 error(s) and 5 warning(s) (0.4s)
+    C:\Users\Admin\Documents\TheToyRoomDesktop\Views\ViewItemWindow.xaml.cs(30,59): error CS0103: The name 'File' does not exist in the current context
+    C:\Users\Admin\Documents\TheToyRoomDesktop\Views\ViewItemWindow.xaml.cs(36,44): warning CS8604: Possible null reference argument for parameter 'uriString' in 'Uri.Uri(string uriString, UriKind uriKind)'.
+    C:\Users\Admin\Documents\TheToyRoomDesktop\App.xaml.cs(19,27): error CS0103: The name 'Path' does not exist in the current context
+    C:\Users\Admin\Documents\TheToyRoomDesktop\App.xaml.cs(24,14): error CS0103: The name 'Directory' does not exist in the current context
+    C:\Users\Admin\Documents\TheToyRoomDesktop\App.xaml.cs(26,13): error CS0103: The name 'Directory' does not exist in the current context
+    C:\Users\Admin\Documents\TheToyRoomDesktop\App.xaml.cs(29,22): error CS0103: The name 'Path' does not exist in the current context
+    C:\Users\Admin\Documents\TheToyRoomDesktop\Views\SettingsPage.xaml.cs(24,31): error CS0103: The name 'Path' does not exist in the current context
+    C:\Users\Admin\Documents\TheToyRoomDesktop\Views\SettingsPage.xaml.cs(28,26): error CS0103: The name 'Path' does not exist in the current context
+    C:\Users\Admin\Documents\TheToyRoomDesktop\Views\SettingsPage.xaml.cs(33,17): error CS0103: The name 'File' does not exist in the current context
+    C:\Users\Admin\Documents\TheToyRoomDesktop\Views\SettingsPage.xaml.cs(35,36): error CS0246: The type or namespace name 'FileInfo' could not be found (are you missing a using directive or an assembly reference?)
+    C:\Users\Admin\Documents\TheToyRoomDesktop\Services\CollectibleService.cs(202,21): error CS0103: The name 'File' does not exist in the current context
+    C:\Users\Admin\Documents\TheToyRoomDesktop\Services\CollectibleService.cs(204,21): error CS0103: The name 'File' does not exist in the current context
+    C:\Users\Admin\Documents\TheToyRoomDesktop\Services\ExportService.cs(49,13): warning CS8602: Dereference of a possibly null reference.
+    C:\Users\Admin\Documents\TheToyRoomDesktop\Views\AddItemPage.xaml.cs(126,13): error CS0103: The name 'File' does not exist in the current context
+    C:\Users\Admin\Documents\TheToyRoomDesktop\Services\ExportService.cs(142,13): warning CS8602: Dereference of a possibly null reference.
+    C:\Users\Admin\Documents\TheToyRoomDesktop\Views\ImporterPage.xaml.cs(47,17): error CS0103: The name 'File' does not exist in the current context
+    C:\Users\Admin\Documents\TheToyRoomDesktop\Views\ImporterPage.xaml.cs(76,57): error CS0103: The name 'File' does not exist in the current context
+    C:\Users\Admin\Documents\TheToyRoomDesktop\Views\ImporterPage.xaml.cs(84,36): error CS0103: The name 'File' does not exist in the current context
+    C:\Users\Admin\Documents\TheToyRoomDesktop\Views\ReportsPage.xaml.cs(124,23): error CS0103: The name 'File' does not exist in the current context
+    C:\Users\Admin\Documents\TheToyRoomDesktop\Services\ExportService.cs(230,32): warning CS8601: Possible null reference assignment.
+    C:\Users\Admin\Documents\TheToyRoomDesktop\Services\ExportService.cs(232,40): warning CS8601: Possible null reference assignment.
+
+Build failed with 16 error(s) and 5 warning(s) in 1.0s
+
+[ERROR] Build failed!
+
+The errors above show exactly what needs to be fixed.
+
+Save the error messages and we can fix them!
+
+Press any key to continue . . .
