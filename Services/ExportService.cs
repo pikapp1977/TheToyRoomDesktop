@@ -28,7 +28,7 @@ public class ExportService
             };
             sheets.Append(sheet);
 
-            var sheetData = worksheetPart.Worksheet.GetFirstChild<SheetData>();
+            var sheetData = worksheetPart.Worksheet.GetFirstChild<SheetData>()!;
 
             // Add header row
             var headerRow = new Row { RowIndex = 1 };
@@ -123,7 +123,7 @@ public class ExportService
             };
             sheets.Append(sheet);
 
-            var sheetData = worksheetPart.Worksheet.GetFirstChild<SheetData>();
+            var sheetData = worksheetPart.Worksheet.GetFirstChild<SheetData>()!;
 
             // Add header row with instructions
             var headerRow = new Row { RowIndex = 1 };
@@ -227,9 +227,9 @@ public class ExportService
 
                     var item = new Collectible
                     {
-                        Name = name,
+                        Name = name!,
                         Character = GetCellValue(workbookPart, cells, 1),
-                        Manufacturer = manufacturer,
+                        Manufacturer = manufacturer!,
                         Reissue = GetCellValue(workbookPart, cells, 4)?.ToLower() == "yes",
                         Stylized = GetCellValue(workbookPart, cells, 5)?.ToLower() == "yes",
                         OriginalPrice = ParseDecimal(GetCellValue(workbookPart, cells, 6)),
