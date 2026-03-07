@@ -7,6 +7,11 @@ echo TheToyRoomDesktop - Local Build
 echo ========================================
 echo.
 
+REM Change to the directory where this script is located
+cd /d "%~dp0"
+echo Working directory: %CD%
+echo.
+
 REM Check if dotnet is installed
 where dotnet >nul 2>nul
 if %ERRORLEVEL% NEQ 0 (
@@ -26,6 +31,7 @@ echo.
 REM Check if we're in the right directory
 if not exist "TheToyRoomDesktop.csproj" (
     echo [ERROR] TheToyRoomDesktop.csproj not found
+    echo Current directory: %CD%
     echo Please run this script from the project directory
     pause
     exit /b 1
@@ -54,15 +60,16 @@ echo.
 
 REM Build Debug
 echo [3/5] Building Debug configuration...
+echo This will show any compilation errors...
+echo.
 dotnet build TheToyRoomDesktop.csproj -c Debug
 if %ERRORLEVEL% NEQ 0 (
+    echo.
     echo [ERROR] Build failed!
     echo.
-    echo Please review the errors above and fix them.
-    echo Common issues:
-    echo  - Missing using statements
-    echo  - Namespace mismatches
-    echo  - XAML syntax errors
+    echo The errors above show exactly what needs to be fixed.
+    echo.
+    echo Save the error messages and we can fix them!
     echo.
     pause
     exit /b 1
