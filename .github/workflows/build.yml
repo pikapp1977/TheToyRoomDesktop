@@ -1,0 +1,93 @@
+name: Build WPF Installer
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore TheToyRoomDesktop.csproj
+
+      - name: Publish application
+        run: dotnet publish TheToyRoomDesktop.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true
+
+      - name: Verify publish output
+        run: |
+          Write-Host "Checking publish directory..."
+          $publishPath = "bin\Release\net8.0-windows\win-x64\publish"
+          if (Test-Path $publishPath) {
+            Write-Host "Publish directory exists"
+            Get-ChildItem $publishPath | ForEach-Object { Write-Host "  - $($_.Name)" }
+          } else {
+            Write-Error "Publish directory not found at: $publishPath"
+            exit 1
+          }
+          
+          $exePath = "$publishPath\TheToyRoomDesktop.exe"
+          if (Test-Path $exePath) {
+            Write-Host "TheToyRoomDesktop.exe found!"
+          } else {
+            Write-Error "TheToyRoomDesktop.exe not found at: $exePath"
+            exit 1
+          }
+
+      - name: Download and install Inno Setup
+        run: |
+          $innoSetupUrl = "https://files.jrsoftware.org/is/6/innosetup-6.2.2.exe"
+          Invoke-WebRequest -Uri $innoSetupUrl -OutFile "innosetup-installer.exe" -UseBasicParsing
+          Start-Process -FilePath ".\innosetup-installer.exe" -ArgumentList "/VERYSILENT","/SUPPRESSMSGBOXES","/NORESTART","/SP-" -Wait
+          Start-Sleep -Seconds 5
+
+      - name: Verify Inno Setup installation
+        run: |
+          $isccPath = "C:\Program Files (x86)\Inno Setup 6\ISCC.exe"
+          if (Test-Path $isccPath) {
+            Write-Host "Inno Setup found at: $isccPath"
+          } else {
+            Write-Error "Inno Setup not found!"
+            exit 1
+          }
+
+      - name: Create installer with Inno Setup
+        run: |
+          $iscc = "C:\Program Files (x86)\Inno Setup 6\ISCC.exe"
+          Write-Host "Running Inno Setup compiler..."
+          & $iscc TheToyRoomDesktopSetup.iss 2>&1 | Tee-Object -Variable isccOutput
+          Write-Host "Inno Setup output:"
+          Write-Host $isccOutput
+          
+          if ($LASTEXITCODE -ne 0) {
+            Write-Error "Inno Setup compilation failed with exit code $LASTEXITCODE"
+            Write-Host "Full output above for debugging"
+            exit 1
+          }
+          
+          Write-Host "Checking for generated installer..."
+          Get-ChildItem TheToyRoomDesktopSetup_v*.exe | ForEach-Object { Write-Host "  Found: $($_.Name)" }
+
+      - name: Upload standalone executable
+        uses: actions/upload-artifact@v4
+        with:
+          name: TheToyRoomDesktop-Portable
+          path: bin/Release/net8.0-windows/win-x64/publish/TheToyRoomDesktop.exe
+
+      - name: Upload installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: TheToyRoomDesktop-Installer
+          path: TheToyRoomDesktopSetup_v*.exe
