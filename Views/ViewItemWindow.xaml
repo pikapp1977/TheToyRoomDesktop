@@ -1,0 +1,76 @@
+<Window x:Class="TheToyRoomDesktop.Views.ViewItemWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="View Item" Height="600" Width="500"
+        WindowStartupLocation="CenterOwner"
+        Background="#f8f9fa">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="20">
+            <TextBlock Text="Item Details" FontSize="24" FontWeight="Bold" Foreground="#6f42c1" Margin="0,0,0,20"/>
+            
+            <!-- Image -->
+            <Border Background="White" BorderBrush="#dee2e6" BorderThickness="1" CornerRadius="8" Padding="10" Margin="0,0,0,15"
+                    x:Name="ImageBorder" Visibility="Collapsed">
+                <Image x:Name="ItemImage" MaxHeight="300" Stretch="Uniform"/>
+            </Border>
+            
+            <!-- Details -->
+            <Border Background="White" BorderBrush="#dee2e6" BorderThickness="1" CornerRadius="8" Padding="15" Margin="0,0,0,10">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Name:" FontWeight="Bold" Margin="0,5"/>
+                    <TextBlock Grid.Row="0" Grid.Column="1" x:Name="NameText" Margin="0,5"/>
+                    
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Character:" FontWeight="Bold" Margin="0,5"/>
+                    <TextBlock Grid.Row="1" Grid.Column="1" x:Name="CharacterText" Margin="0,5"/>
+                    
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Manufacturer:" FontWeight="Bold" Margin="0,5"/>
+                    <TextBlock Grid.Row="2" Grid.Column="1" x:Name="ManufacturerText" Margin="0,5"/>
+                    
+                    <TextBlock Grid.Row="3" Grid.Column="0" Text="Deco:" FontWeight="Bold" Margin="0,5"/>
+                    <TextBlock Grid.Row="3" Grid.Column="1" x:Name="DecoText" Margin="0,5"/>
+                    
+                    <TextBlock Grid.Row="4" Grid.Column="0" Text="Reissue:" FontWeight="Bold" Margin="0,5"/>
+                    <TextBlock Grid.Row="4" Grid.Column="1" x:Name="ReissueText" Margin="0,5"/>
+                    
+                    <TextBlock Grid.Row="5" Grid.Column="0" Text="Stylized:" FontWeight="Bold" Margin="0,5"/>
+                    <TextBlock Grid.Row="5" Grid.Column="1" x:Name="StylizedText" Margin="0,5"/>
+                    
+                    <TextBlock Grid.Row="6" Grid.Column="0" Text="Original Price:" FontWeight="Bold" Margin="0,5"/>
+                    <TextBlock Grid.Row="6" Grid.Column="1" x:Name="OriginalPriceText" Margin="0,5"/>
+                    
+                    <TextBlock Grid.Row="7" Grid.Column="0" Text="Current Value:" FontWeight="Bold" Margin="0,5"/>
+                    <TextBlock Grid.Row="7" Grid.Column="1" x:Name="CurrentValueText" Margin="0,5"/>
+                    
+                    <TextBlock Grid.Row="8" Grid.Column="0" Text="Date Acquired:" FontWeight="Bold" Margin="0,5"/>
+                    <TextBlock Grid.Row="8" Grid.Column="1" x:Name="DateAcquiredText" Margin="0,5"/>
+                    
+                    <TextBlock Grid.Row="9" Grid.Column="0" Text="Date Added:" FontWeight="Bold" Margin="0,5"/>
+                    <TextBlock Grid.Row="9" Grid.Column="1" x:Name="DateAddedText" Margin="0,5"/>
+                    
+                    <TextBlock Grid.Row="10" Grid.Column="0" Text="Notes:" FontWeight="Bold" Margin="0,5" VerticalAlignment="Top"/>
+                    <TextBlock Grid.Row="10" Grid.Column="1" x:Name="NotesText" Margin="0,5" TextWrapping="Wrap"/>
+                </Grid>
+            </Border>
+            
+            <Button Content="Close" Click="Close_Click" HorizontalAlignment="Center" Padding="30,10" Margin="0,10,0,0"/>
+        </StackPanel>
+    </ScrollViewer>
+</Window>
