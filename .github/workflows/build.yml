@@ -29,17 +29,12 @@ jobs:
       - name: Restore dependencies
         run: |
           Write-Host "Restoring dependencies..."
-          dotnet restore TheToyRoomDesktop.csproj -v detailed
-
-      - name: Build project (Debug for testing)
-        run: |
-          Write-Host "Building project..."
-          dotnet build TheToyRoomDesktop.csproj -c Debug -v detailed
+          dotnet restore TheToyRoomDesktop.csproj
 
       - name: Publish application
         run: |
           Write-Host "Publishing application..."
-          dotnet publish TheToyRoomDesktop.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -v detailed
+          dotnet publish TheToyRoomDesktop.csproj -c Release -r win-x64 --self-contained true /p:PublishSingleFile=true
 
       - name: Verify publish output
         run: |
