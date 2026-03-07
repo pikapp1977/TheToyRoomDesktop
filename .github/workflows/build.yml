@@ -20,21 +20,11 @@ jobs:
         with:
           dotnet-version: '8.0.x'
 
-      - name: Display project structure
-        run: |
-          Write-Host "=== Project Structure ===="
-          Get-ChildItem -Recurse -Include *.csproj,*.xaml,*.cs | Select-Object FullName
-          Write-Host "=========================="
-
       - name: Restore dependencies
-        run: |
-          Write-Host "Restoring dependencies..."
-          dotnet restore TheToyRoomDesktop.csproj
+        run: dotnet restore TheToyRoomDesktop.csproj
 
       - name: Publish application
-        run: |
-          Write-Host "Publishing application..."
-          dotnet publish TheToyRoomDesktop.csproj -c Release -r win-x64 --self-contained true /p:PublishSingleFile=true
+        run: dotnet publish TheToyRoomDesktop.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true
 
       - name: Verify publish output
         run: |
@@ -45,29 +35,21 @@ jobs:
             Get-ChildItem $publishPath | ForEach-Object { Write-Host "  - $($_.Name)" }
           } else {
             Write-Error "Publish directory not found at: $publishPath"
-            Write-Host "Checking what directories exist:"
-            Get-ChildItem bin -Recurse -Directory | Select-Object FullName
             exit 1
           }
           
           $exePath = "$publishPath\TheToyRoomDesktop.exe"
           if (Test-Path $exePath) {
             Write-Host "TheToyRoomDesktop.exe found!"
-            $fileInfo = Get-Item $exePath
-            Write-Host "  Size: $($fileInfo.Length / 1MB) MB"
           } else {
             Write-Error "TheToyRoomDesktop.exe not found at: $exePath"
-            Write-Host "Files in publish directory:"
-            Get-ChildItem $publishPath | ForEach-Object { Write-Host "  - $($_.Name)" }
             exit 1
           }
 
       - name: Download and install Inno Setup
         run: |
           $innoSetupUrl = "https://files.jrsoftware.org/is/6/innosetup-6.2.2.exe"
-          Write-Host "Downloading Inno Setup..."
           Invoke-WebRequest -Uri $innoSetupUrl -OutFile "innosetup-installer.exe" -UseBasicParsing
-          Write-Host "Installing Inno Setup..."
           Start-Process -FilePath ".\innosetup-installer.exe" -ArgumentList "/VERYSILENT","/SUPPRESSMSGBOXES","/NORESTART","/SP-" -Wait
           Start-Sleep -Seconds 5
 
@@ -96,28 +78,16 @@ jobs:
           }
           
           Write-Host "Checking for generated installer..."
-          if (Test-Path "TheToyRoomDesktopSetup_v*.exe") {
-            Get-ChildItem TheToyRoomDesktopSetup_v*.exe | ForEach-Object { 
-              Write-Host "  Found: $($_.Name)"
-              Write-Host "  Size: $($_.Length / 1MB) MB"
-            }
-          } else {
-            Write-Error "Installer not found!"
-            Write-Host "Files in current directory:"
-            Get-ChildItem *.exe | ForEach-Object { Write-Host "  - $($_.Name)" }
-            exit 1
-          }
+          Get-ChildItem TheToyRoomDesktopSetup_v*.exe | ForEach-Object { Write-Host "  Found: $($_.Name)" }
 
       - name: Upload standalone executable
         uses: actions/upload-artifact@v4
         with:
           name: TheToyRoomDesktop-Portable
           path: bin/Release/net8.0-windows/win-x64/publish/TheToyRoomDesktop.exe
-          if-no-files-found: error
 
       - name: Upload installer
         uses: actions/upload-artifact@v4
         with:
           name: TheToyRoomDesktop-Installer
           path: TheToyRoomDesktopSetup_v*.exe
-          if-no-files-found: error
