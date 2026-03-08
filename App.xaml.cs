@@ -10,6 +10,7 @@ public partial class App : Application
     public static CollectibleService? CollectibleService { get; private set; }
     public static ManufacturerService? ManufacturerService { get; private set; }
     public static DecoService? DecoService { get; private set; }
+    public static ClassificationService? ClassificationService { get; private set; }
     public static ExportService? ExportService { get; private set; }
 
     protected override void OnStartup(StartupEventArgs e)
@@ -34,6 +35,10 @@ public partial class App : Application
         CollectibleService = new CollectibleService(DatabaseService);
         ManufacturerService = new ManufacturerService(DatabaseService);
         DecoService = new DecoService(DatabaseService);
+        ClassificationService = new ClassificationService(DatabaseService);
         ExportService = new ExportService();
+
+        // Seed default data
+        ClassificationService.SeedDefaultClassificationsAsync().Wait();
     }
 }

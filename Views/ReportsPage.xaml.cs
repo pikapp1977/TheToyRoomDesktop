@@ -11,6 +11,7 @@ public partial class ReportsPage : Page
 {
     private List<CollectibleWithGainLoss> _allItems = new();
     private List<string> _manufacturers = new();
+    private List<string> _classifications = new();
 
     public class CollectibleWithGainLoss
     {
@@ -18,6 +19,7 @@ public partial class ReportsPage : Page
         public string Name { get; set; } = "";
         public string? Character { get; set; }
         public string? DecoName { get; set; }
+        public string? ClassificationName { get; set; }
         public string Manufacturer { get; set; } = "";
         public decimal OriginalPrice { get; set; }
         public decimal CurrentValue { get; set; }
@@ -47,6 +49,7 @@ public partial class ReportsPage : Page
                 Name = c.Name,
                 Character = c.Character,
                 DecoName = c.DecoName,
+                ClassificationName = c.ClassificationName,
                 Manufacturer = c.Manufacturer,
                 OriginalPrice = c.OriginalPrice,
                 CurrentValue = c.CurrentValue
@@ -55,8 +58,15 @@ public partial class ReportsPage : Page
             _manufacturers = collectibles.Select(c => c.Manufacturer).Distinct().OrderBy(m => m).ToList();
             _manufacturers.Insert(0, "All Manufacturers");
             
+            var allClassifications = await App.ClassificationService!.GetAllClassificationsAsync();
+            _classifications = allClassifications.Select(c => c.Name).OrderBy(c => c).ToList();
+            _classifications.Insert(0, "All Classifications");
+            
             ManufacturerFilter.ItemsSource = _manufacturers;
             ManufacturerFilter.SelectedIndex = 0;
+            
+            ClassificationFilter.ItemsSource = _classifications;
+            ClassificationFilter.SelectedIndex = 0;
             
             UpdateDisplay(_allItems);
         }
@@ -84,20 +94,35 @@ public partial class ReportsPage : Page
 
     private void ManufacturerFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
+        ApplyFilters();
+    }
+
+    private void ClassificationFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        ApplyFilters();
+    }
+
+    private void ApplyFilters()
+    {
+        var filtered = _allItems.AsEnumerable();
+        
         if (ManufacturerFilter.SelectedItem is string manufacturer && manufacturer != "All Manufacturers")
         {
-            var filtered = _allItems.Where(i => i.Manufacturer == manufacturer).ToList();
-            UpdateDisplay(filtered);
+            filtered = filtered.Where(i => i.Manufacturer == manufacturer);
         }
-        else
+        
+        if (ClassificationFilter.SelectedItem is string classification && classification != "All Classifications")
         {
-            UpdateDisplay(_allItems);
+            filtered = filtered.Where(i => i.ClassificationName == classification);
         }
+        
+        UpdateDisplay(filtered.ToList());
     }
 
     private void ClearFilter_Click(object sender, RoutedEventArgs e)
     {
         ManufacturerFilter.SelectedIndex = 0;
+        ClassificationFilter.SelectedIndex = 0;
     }
 
     private async void ExportExcel_Click(object sender, RoutedEventArgs e)

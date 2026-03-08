@@ -19,6 +19,7 @@ public partial class ViewItemWindow : Window
         CharacterText.Text = item.Character ?? "N/A";
         ManufacturerText.Text = item.Manufacturer;
         DecoText.Text = item.DecoName ?? "N/A";
+        ClassificationText.Text = item.ClassificationName ?? "N/A";
         ReissueText.Text = item.Reissue ? "Yes" : "No";
         StylizedText.Text = item.Stylized ? "Yes" : "No";
         OriginalPriceText.Text = item.OriginalPrice.ToString("C2");

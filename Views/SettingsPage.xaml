@@ -182,6 +182,52 @@
                 </StackPanel>
             </Border>
             
+            <!-- Manage Classifications -->
+            <Border Background="White" BorderBrush="#dee2e6" BorderThickness="1" CornerRadius="8" Padding="20" Margin="0,0,0,20">
+                <StackPanel>
+                    <Grid Margin="0,0,0,15">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Manage Classifications" FontSize="18" FontWeight="Bold" VerticalAlignment="Center"/>
+                        <Button Grid.Column="1" Content="+ Add New" Click="AddClassification_Click" Style="{StaticResource AddButton}"/>
+                    </Grid>
+                    
+                    <DataGrid x:Name="ClassificationsGrid" 
+                              AutoGenerateColumns="False" 
+                              CanUserAddRows="False"
+                              IsReadOnly="True"
+                              SelectionMode="Single"
+                              Height="200"
+                              HeadersVisibility="Column"
+                              BorderBrush="#dee2e6"
+                              BorderThickness="1">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*"/>
+                            <DataGridTextColumn Header="Date Added" Binding="{Binding DateAdded, StringFormat='{}{0:MM/dd/yyyy}'}" Width="120"/>
+                            <DataGridTemplateColumn Header="Actions" Width="170">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                            <Button Content="Edit" 
+                                                    Click="EditClassification_Click" 
+                                                    Tag="{Binding Id}" 
+                                                    Style="{StaticResource EditButton}"
+                                                    Margin="0,0,8,0"/>
+                                            <Button Content="Delete" 
+                                                    Click="DeleteClassification_Click" 
+                                                    Tag="{Binding Id}" 
+                                                    Style="{StaticResource DeleteButton}"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+            </Border>
+            
             <!-- Application Info -->
             <Border Background="White" BorderBrush="#dee2e6" BorderThickness="1" CornerRadius="8" Padding="20">
                 <StackPanel>

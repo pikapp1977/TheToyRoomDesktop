@@ -12,6 +12,7 @@ public partial class AddItemWindow : Window
     private Collectible? _editItem;
     private List<Manufacturer> _manufacturers = new();
     private List<Deco> _decos = new();
+    private List<Classification> _classifications = new();
     private string? _selectedImagePath;
     public bool ItemSaved { get; private set; } = false;
 
@@ -40,9 +41,11 @@ public partial class AddItemWindow : Window
         {
             _manufacturers = await App.ManufacturerService!.GetAllManufacturersAsync();
             _decos = await App.DecoService!.GetAllDecosAsync();
+            _classifications = await App.ClassificationService!.GetAllClassificationsAsync();
             
             ManufacturerComboBox.ItemsSource = _manufacturers.Select(m => m.Name).ToList();
             DecoComboBox.ItemsSource = _decos.Select(d => d.Name).ToList();
+            ClassificationComboBox.ItemsSource = _classifications.Select(c => c.Name).ToList();
         }
         catch (Exception ex)
         {
@@ -56,6 +59,7 @@ public partial class AddItemWindow : Window
         CharacterBox.Text = item.Character;
         ManufacturerComboBox.Text = item.Manufacturer;
         DecoComboBox.Text = item.DecoName;
+        ClassificationComboBox.Text = item.ClassificationName;
         ReissueCheckBox.IsChecked = item.Reissue;
         StylizedCheckBox.IsChecked = item.Stylized;
         OriginalPriceBox.Text = item.OriginalPrice.ToString("F2");
@@ -105,6 +109,24 @@ public partial class AddItemWindow : Window
             .ToList();
         
         DecoComboBox.ItemsSource = filtered;
+    }
+
+    private void ClassificationComboBox_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        var text = ClassificationComboBox.Text.ToLower();
+        if (string.IsNullOrWhiteSpace(text))
+        {
+            ClassificationComboBox.ItemsSource = _classifications.Select(c => c.Name).ToList();
+            return;
+        }
+
+        var filtered = _classifications
+            .Where(c => c.Name.ToLower().Contains(text))
+            .Select(c => c.Name)
+            .Take(10)
+            .ToList();
+        
+        ClassificationComboBox.ItemsSource = filtered;
     }
 
     private async void AddManufacturer_Click(object sender, RoutedEventArgs e)
@@ -163,6 +185,36 @@ public partial class AddItemWindow : Window
             catch (Exception ex)
             {
                 MessageBox.Show($"Error adding deco: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+    }
+
+    private async void AddClassification_Click(object sender, RoutedEventArgs e)
+    {
+        var dialog = new TextInputDialog("Add New Classification", "Enter classification name:");
+        if (dialog.ShowDialog() == true && !string.IsNullOrWhiteSpace(dialog.ResponseText))
+        {
+            var classificationName = dialog.ResponseText.Trim();
+            
+            // Check if it already exists
+            var existing = await App.ClassificationService!.GetClassificationByNameAsync(classificationName);
+            if (existing != null)
+            {
+                MessageBox.Show($"Classification '{classificationName}' already exists.", "Duplicate", MessageBoxButton.OK, MessageBoxImage.Information);
+                ClassificationComboBox.Text = classificationName;
+                return;
+            }
+            
+            try
+            {
+                await App.ClassificationService!.AddClassificationAsync(classificationName);
+                await LoadDropdownData(); // Refresh the list
+                ClassificationComboBox.Text = classificationName; // Select the new one
+                MessageBox.Show($"Classification '{classificationName}' added successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error adding classification: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }
@@ -235,12 +287,21 @@ public partial class AddItemWindow : Window
                 decoId = await App.DecoService!.AddDecoAsync(decoName);
             }
 
+            // Get or create classification if provided
+            int? classificationId = null;
+            if (!string.IsNullOrWhiteSpace(ClassificationComboBox.Text))
+            {
+                var classificationName = ClassificationComboBox.Text.Trim();
+                classificationId = await App.ClassificationService!.AddClassificationAsync(classificationName);
+            }
+
             var collectible = new Collectible
             {
                 Name = NameBox.Text.Trim(),
                 Character = string.IsNullOrWhiteSpace(CharacterBox.Text) ? null : CharacterBox.Text.Trim(),
                 Manufacturer = manufacturerName,
                 DecoId = decoId,
+                ClassificationId = classificationId,
                 Reissue = ReissueCheckBox.IsChecked ?? false,
                 Stylized = StylizedCheckBox.IsChecked ?? false,
                 OriginalPrice = decimal.TryParse(OriginalPriceBox.Text, out var op) ? op : 0,

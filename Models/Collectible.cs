@@ -8,6 +8,8 @@ public class Collectible
     public string? Character { get; set; }
     public int? DecoId { get; set; }
     public string? DecoName { get; set; }
+    public int? ClassificationId { get; set; }
+    public string? ClassificationName { get; set; }
     public bool Reissue { get; set; }
     public bool Stylized { get; set; }
     public decimal OriginalPrice { get; set; }

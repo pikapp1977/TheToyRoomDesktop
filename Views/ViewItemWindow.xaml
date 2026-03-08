@@ -29,6 +29,10 @@
                     <TextBlock Text="Deco" FontWeight="Bold" FontSize="12" Foreground="#6c757d" Margin="0,0,0,5"/>
                     <TextBlock x:Name="DecoText" FontSize="16" Margin="0,0,0,15"/>
                     
+                    <!-- Classification -->
+                    <TextBlock Text="Classification" FontWeight="Bold" FontSize="12" Foreground="#6c757d" Margin="0,0,0,5"/>
+                    <TextBlock x:Name="ClassificationText" FontSize="16" Margin="0,0,0,15"/>
+                    
                     <!-- Flags -->
                     <Grid Margin="0,0,0,15">
                         <Grid.ColumnDefinitions>

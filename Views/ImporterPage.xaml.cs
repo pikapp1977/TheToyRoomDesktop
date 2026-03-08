@@ -16,8 +16,9 @@ public partial class ImporterPage : Page
         public bool IsSelected { get; set; } = true;
         public string Name { get; set; } = "";
         public string? Character { get; set; }
-        public string Manufacturer { get; set; } = "";
         public string? DecoName { get; set; }
+        public string? ClassificationName { get; set; }
+        public string Manufacturer { get; set; } = "";
         public bool Reissue { get; set; }
         public bool Stylized { get; set; }
         public decimal OriginalPrice { get; set; }
@@ -92,6 +93,7 @@ public partial class ImporterPage : Page
                 Character = c.Character,
                 Manufacturer = c.Manufacturer,
                 DecoName = c.DecoName,
+                ClassificationName = c.ClassificationName,
                 Reissue = c.Reissue,
                 Stylized = c.Stylized,
                 OriginalPrice = c.OriginalPrice,
@@ -184,6 +186,13 @@ public partial class ImporterPage : Page
                     decoId = await App.DecoService!.AddDecoAsync(item.DecoName);
                 }
 
+                // Add classification if provided
+                int? classificationId = null;
+                if (!string.IsNullOrWhiteSpace(item.ClassificationName))
+                {
+                    classificationId = await App.ClassificationService!.AddClassificationAsync(item.ClassificationName);
+                }
+
                 // Create collectible
                 var collectible = new Collectible
                 {
@@ -191,6 +200,7 @@ public partial class ImporterPage : Page
                     Character = item.Character,
                     Manufacturer = item.Manufacturer,
                     DecoId = decoId,
+                    ClassificationId = classificationId,
                     Reissue = item.Reissue,
                     Stylized = item.Stylized,
                     OriginalPrice = item.OriginalPrice,

@@ -84,6 +84,8 @@
                             <DataGridCheckBoxColumn Header="Import" Binding="{Binding IsSelected}" Width="60"/>
                             <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*" IsReadOnly="True"/>
                             <DataGridTextColumn Header="Character" Binding="{Binding Character}" Width="*" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Deco" Binding="{Binding DecoName}" Width="80" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Classification" Binding="{Binding ClassificationName}" Width="100" IsReadOnly="True"/>
                             <DataGridTextColumn Header="Manufacturer" Binding="{Binding Manufacturer}" Width="*" IsReadOnly="True"/>
                             <DataGridTextColumn Header="Original" Binding="{Binding OriginalPrice, StringFormat=C2}" Width="100" IsReadOnly="True"/>
                             <DataGridTextColumn Header="Current" Binding="{Binding CurrentValue, StringFormat=C2}" Width="100" IsReadOnly="True"/>

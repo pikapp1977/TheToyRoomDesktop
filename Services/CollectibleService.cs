@@ -22,9 +22,12 @@ public class CollectibleService
 
         var query = @"SELECT c.Id, c.Name, c.Manufacturer, c.Character, c.DecoId, c.Reissue, c.Stylized, 
                             c.OriginalPrice, c.CurrentValue, c.ImagePath, c.DateAdded, c.DateAcquired, c.Notes,
-                            d.Name as DecoName
+                            c.ClassificationId,
+                            d.Name as DecoName,
+                            cl.Name as ClassificationName
                      FROM Collectibles c 
-                     LEFT JOIN Decos d ON c.DecoId = d.Id 
+                     LEFT JOIN Decos d ON c.DecoId = d.Id
+                     LEFT JOIN Classifications cl ON c.ClassificationId = cl.Id 
                      ORDER BY c.DateAdded DESC";
         using var command = new SQLiteCommand(query, connection);
         using var reader = await command.ExecuteReaderAsync();
@@ -90,6 +93,14 @@ public class CollectibleService
             // Read Stylized
             var stylizedOrdinal = reader.GetOrdinal("Stylized");
             bool stylized = reader.IsDBNull(stylizedOrdinal) ? false : reader.GetInt32(stylizedOrdinal) == 1;
+
+            // Read ClassificationId
+            var classificationIdOrdinal = reader.GetOrdinal("ClassificationId");
+            int? classificationId = reader.IsDBNull(classificationIdOrdinal) ? null : reader.GetInt32(classificationIdOrdinal);
+
+            // Read ClassificationName
+            var classificationNameOrdinal = reader.GetOrdinal("ClassificationName");
+            string? classificationName = reader.IsDBNull(classificationNameOrdinal) ? null : reader.GetString(classificationNameOrdinal);
             
             collectibles.Add(new Collectible
             {
@@ -99,6 +110,8 @@ public class CollectibleService
                 Character = character,
                 DecoId = decoId,
                 DecoName = decoName,
+                ClassificationId = classificationId,
+                ClassificationName = classificationName,
                 Reissue = reissue,
                 Stylized = stylized,
                 OriginalPrice = originalPrice,
@@ -118,14 +131,15 @@ public class CollectibleService
         using var connection = _databaseService.GetConnection();
         await connection.OpenAsync();
 
-        var query = @"INSERT INTO Collectibles (Name, Manufacturer, Character, DecoId, Reissue, Stylized, OriginalPrice, CurrentValue, ImagePath, DateAdded, DateAcquired, Notes)
-                     VALUES (@Name, @Manufacturer, @Character, @DecoId, @Reissue, @Stylized, @OriginalPrice, @CurrentValue, @ImagePath, @DateAdded, @DateAcquired, @Notes)";
+        var query = @"INSERT INTO Collectibles (Name, Manufacturer, Character, DecoId, ClassificationId, Reissue, Stylized, OriginalPrice, CurrentValue, ImagePath, DateAdded, DateAcquired, Notes)
+                     VALUES (@Name, @Manufacturer, @Character, @DecoId, @ClassificationId, @Reissue, @Stylized, @OriginalPrice, @CurrentValue, @ImagePath, @DateAdded, @DateAcquired, @Notes)";
 
         using var command = new SQLiteCommand(query, connection);
         command.Parameters.AddWithValue("@Name", collectible.Name);
         command.Parameters.AddWithValue("@Manufacturer", collectible.Manufacturer);
         command.Parameters.AddWithValue("@Character", collectible.Character ?? (object)DBNull.Value);
         command.Parameters.AddWithValue("@DecoId", collectible.DecoId ?? (object)DBNull.Value);
+        command.Parameters.AddWithValue("@ClassificationId", collectible.ClassificationId ?? (object)DBNull.Value);
         command.Parameters.AddWithValue("@Reissue", collectible.Reissue ? 1 : 0);
         command.Parameters.AddWithValue("@Stylized", collectible.Stylized ? 1 : 0);
         command.Parameters.AddWithValue("@OriginalPrice", collectible.OriginalPrice);
@@ -145,7 +159,7 @@ public class CollectibleService
 
         var query = @"UPDATE Collectibles 
                      SET Name = @Name, Manufacturer = @Manufacturer, Character = @Character, DecoId = @DecoId, 
-                         Reissue = @Reissue, Stylized = @Stylized, OriginalPrice = @OriginalPrice, 
+                         ClassificationId = @ClassificationId, Reissue = @Reissue, Stylized = @Stylized, OriginalPrice = @OriginalPrice, 
                          CurrentValue = @CurrentValue, ImagePath = @ImagePath, DateAcquired = @DateAcquired, Notes = @Notes
                      WHERE Id = @Id";
 
@@ -155,6 +169,7 @@ public class CollectibleService
         command.Parameters.AddWithValue("@Manufacturer", collectible.Manufacturer);
         command.Parameters.AddWithValue("@Character", collectible.Character ?? (object)DBNull.Value);
         command.Parameters.AddWithValue("@DecoId", collectible.DecoId ?? (object)DBNull.Value);
+        command.Parameters.AddWithValue("@ClassificationId", collectible.ClassificationId ?? (object)DBNull.Value);
         command.Parameters.AddWithValue("@Reissue", collectible.Reissue ? 1 : 0);
         command.Parameters.AddWithValue("@Stylized", collectible.Stylized ? 1 : 0);
         command.Parameters.AddWithValue("@OriginalPrice", collectible.OriginalPrice);

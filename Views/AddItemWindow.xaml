@@ -73,6 +73,30 @@
                                     Foreground="White"/>
                         </Grid>
                         
+                        <!-- Classification with Add button -->
+                        <TextBlock Text="Classification" FontWeight="Bold" Margin="0,0,0,5"/>
+                        <Grid Margin="0,0,0,12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <ComboBox x:Name="ClassificationComboBox" 
+                                      Grid.Column="0"
+                                      IsEditable="True" 
+                                      Padding="8"
+                                      TextBoxBase.TextChanged="ClassificationComboBox_TextChanged"/>
+                            <Button Grid.Column="1" 
+                                    Content="+" 
+                                    Click="AddClassification_Click" 
+                                    Margin="5,0,0,0" 
+                                    Padding="12,8"
+                                    FontSize="16"
+                                    FontWeight="Bold"
+                                    ToolTip="Add new classification"
+                                    Background="#28a745"
+                                    Foreground="White"/>
+                        </Grid>
+                        
                         <!-- Checkboxes -->
                         <Grid Margin="0,0,0,12">
                             <Grid.ColumnDefinitions>

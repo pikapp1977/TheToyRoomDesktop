@@ -21,12 +21,17 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             
             <TextBlock Grid.Column="0" Text="Filter by Manufacturer:" VerticalAlignment="Center" Margin="0,0,10,0" FontWeight="Bold"/>
             <ComboBox x:Name="ManufacturerFilter" Grid.Column="1" Padding="8" SelectionChanged="ManufacturerFilter_SelectionChanged"/>
-            <Button Grid.Column="2" Content="Clear Filter" Click="ClearFilter_Click" Margin="10,0,0,0" Padding="15,8"/>
-            <Button Grid.Column="3" Content="Export to Excel" Click="ExportExcel_Click" Margin="10,0,0,0" Padding="15,8" Background="#28a745"/>
+            <TextBlock Grid.Column="2" Text="Classification:" VerticalAlignment="Center" Margin="15,0,10,0" FontWeight="Bold"/>
+            <ComboBox x:Name="ClassificationFilter" Grid.Column="3" Padding="8" SelectionChanged="ClassificationFilter_SelectionChanged"/>
+            <StackPanel Grid.Column="4" Orientation="Horizontal">
+                <Button Content="Clear Filter" Click="ClearFilter_Click" Margin="10,0,0,0" Padding="15,8"/>
+                <Button Content="Export to Excel" Click="ExportExcel_Click" Margin="10,0,0,0" Padding="15,8" Background="#28a745"/>
+            </StackPanel>
         </Grid>
         
         <!-- Data Grid -->
@@ -47,6 +52,7 @@
                 <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*"/>
                 <DataGridTextColumn Header="Character" Binding="{Binding Character}" Width="*"/>
                 <DataGridTextColumn Header="Deco" Binding="{Binding DecoName}" Width="100"/>
+                <DataGridTextColumn Header="Classification" Binding="{Binding ClassificationName}" Width="100"/>
                 <DataGridTextColumn Header="Manufacturer" Binding="{Binding Manufacturer}" Width="*"/>
                 <DataGridTextColumn Header="Original" Binding="{Binding OriginalPrice, StringFormat=C2}" Width="100"/>
                 <DataGridTextColumn Header="Current" Binding="{Binding CurrentValue, StringFormat=C2}" Width="100"/>

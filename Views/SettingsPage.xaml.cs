@@ -47,6 +47,7 @@ public partial class SettingsPage : Page
             var collectibles = await App.CollectibleService!.GetAllCollectiblesAsync();
             var manufacturers = await App.ManufacturerService!.GetAllManufacturersAsync();
             var decos = await App.DecoService!.GetAllDecosAsync();
+            var classifications = await App.ClassificationService!.GetAllClassificationsAsync();
             
             TotalItemsText.Text = collectibles.Count.ToString();
             ManufacturersText.Text = manufacturers.Count.ToString();
@@ -55,6 +56,7 @@ public partial class SettingsPage : Page
             // Load grids
             ManufacturersGrid.ItemsSource = manufacturers.OrderBy(m => m.Name).ToList();
             DecosGrid.ItemsSource = decos.OrderBy(d => d.Name).ToList();
+            ClassificationsGrid.ItemsSource = classifications.OrderBy(c => c.Name).ToList();
         }
         catch (Exception ex)
         {
@@ -359,6 +361,145 @@ public partial class SettingsPage : Page
                     catch (Exception ex)
                     {
                         MessageBox.Show($"Error deleting deco: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+            }
+        }
+    }
+
+    private async void AddClassification_Click(object sender, RoutedEventArgs e)
+    {
+        var dialog = new TextInputDialog("Add New Classification", "Enter classification name:");
+        dialog.Owner = Window.GetWindow(this);
+        
+        if (dialog.ShowDialog() == true && !string.IsNullOrWhiteSpace(dialog.ResponseText))
+        {
+            var classificationName = dialog.ResponseText.Trim();
+            
+            var existing = await App.ClassificationService!.GetClassificationByNameAsync(classificationName);
+            if (existing != null)
+            {
+                MessageBox.Show($"Classification '{classificationName}' already exists.", "Duplicate", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+            
+            try
+            {
+                await App.ClassificationService!.AddClassificationAsync(classificationName);
+                await LoadSettings();
+                MessageBox.Show($"Classification '{classificationName}' added successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error adding classification: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+    }
+
+    private async void EditClassification_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is Button button && button.Tag is int id)
+        {
+            var classifications = await App.ClassificationService!.GetAllClassificationsAsync();
+            var classification = classifications.FirstOrDefault(c => c.Id == id);
+            
+            if (classification != null)
+            {
+                var dialog = new TextInputDialog("Edit Classification", $"Edit classification name:");
+                dialog.Owner = Window.GetWindow(this);
+                dialog.SetInitialValue(classification.Name);
+                
+                if (dialog.ShowDialog() == true && !string.IsNullOrWhiteSpace(dialog.ResponseText))
+                {
+                    var newName = dialog.ResponseText.Trim();
+                    
+                    if (newName.Equals(classification.Name, StringComparison.OrdinalIgnoreCase))
+                    {
+                        return;
+                    }
+                    
+                    var existing = await App.ClassificationService!.GetClassificationByNameAsync(newName);
+                    if (existing != null && existing.Id != id)
+                    {
+                        MessageBox.Show($"Classification '{newName}' already exists.", "Duplicate", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        return;
+                    }
+                    
+                    try
+                    {
+                        var collectibles = await App.CollectibleService!.GetAllCollectiblesAsync();
+                        var affectedCount = collectibles.Count(c => c.ClassificationId == id);
+                        
+                        var confirmMessage = affectedCount > 0 
+                            ? $"This will update {affectedCount} collectible(s) from '{classification.Name}' to '{newName}'.\n\nContinue?"
+                            : $"Rename '{classification.Name}' to '{newName}'?";
+                        
+                        var result = MessageBox.Show(
+                            confirmMessage,
+                            "Confirm Rename",
+                            MessageBoxButton.YesNo,
+                            MessageBoxImage.Question
+                        );
+                        
+                        if (result == MessageBoxResult.Yes)
+                        {
+                            classification.Name = newName;
+                            await App.ClassificationService!.UpdateClassificationAsync(classification);
+                            
+                            await LoadSettings();
+                            MessageBox.Show($"Successfully renamed to '{newName}'! {affectedCount} collectible(s) updated.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Error renaming classification: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+            }
+        }
+    }
+
+    private async void DeleteClassification_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is Button button && button.Tag is int id)
+        {
+            var classifications = await App.ClassificationService!.GetAllClassificationsAsync();
+            var classification = classifications.FirstOrDefault(c => c.Id == id);
+            
+            if (classification != null)
+            {
+                var collectibles = await App.CollectibleService!.GetAllCollectiblesAsync();
+                var inUse = collectibles.Any(c => c.ClassificationId == id);
+                
+                if (inUse)
+                {
+                    MessageBox.Show(
+                        $"Cannot delete '{classification.Name}' because it is used by one or more collectibles.\n\nTip: Use 'Edit' to rename it instead.",
+                        "Cannot Delete",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Warning
+                    );
+                    return;
+                }
+                
+                var result = MessageBox.Show(
+                    $"Are you sure you want to delete classification '{classification.Name}'?",
+                    "Confirm Delete",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Question
+                );
+                
+                if (result == MessageBoxResult.Yes)
+                {
+                    try
+                    {
+                        await App.ClassificationService!.DeleteClassificationAsync(id);
+                        await LoadSettings();
+                        MessageBox.Show($"Classification '{classification.Name}' deleted successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Error deleting classification: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
             }

@@ -127,6 +127,31 @@ public class DatabaseService
         {
             // Column already exists, ignore
         }
+
+        // Create Classifications table
+        var createClassificationsTable = @"
+            CREATE TABLE IF NOT EXISTS Classifications (
+                Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                Name TEXT NOT NULL UNIQUE,
+                DateAdded TEXT NOT NULL
+            )";
+
+        using var createClassificationsCommand = new SQLiteCommand(createClassificationsTable, connection);
+        createClassificationsCommand.ExecuteNonQuery();
+
+        // Add ClassificationId column if it doesn't exist
+        var alterTableClassificationIdQuery = @"
+            ALTER TABLE Collectibles ADD COLUMN ClassificationId INTEGER";
+        
+        try
+        {
+            using var alterClassificationIdCommand = new SQLiteCommand(alterTableClassificationIdQuery, connection);
+            alterClassificationIdCommand.ExecuteNonQuery();
+        }
+        catch (SQLiteException)
+        {
+            // Column already exists, ignore
+        }
     }
 
     public SQLiteConnection GetConnection()

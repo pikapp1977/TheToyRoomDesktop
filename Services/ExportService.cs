@@ -36,6 +36,7 @@ public class ExportService
                 CreateCell("Name", CellValues.String),
                 CreateCell("Character", CellValues.String),
                 CreateCell("Deco", CellValues.String),
+                CreateCell("Classification", CellValues.String),
                 CreateCell("Manufacturer", CellValues.String),
                 CreateCell("Reissue", CellValues.String),
                 CreateCell("Stylized", CellValues.String),
@@ -64,6 +65,7 @@ public class ExportService
                     CreateCell(item.Name, CellValues.String),
                     CreateCell(item.Character ?? "", CellValues.String),
                     CreateCell(item.DecoName ?? "", CellValues.String),
+                    CreateCell(item.ClassificationName ?? "", CellValues.String),
                     CreateCell(item.Manufacturer, CellValues.String),
                     CreateCell(item.Reissue ? "Yes" : "No", CellValues.String),
                     CreateCell(item.Stylized ? "Yes" : "No", CellValues.String),
@@ -91,6 +93,7 @@ public class ExportService
                 CreateCell(totalOriginal.ToString("F2"), CellValues.Number),
                 CreateCell(totalCurrent.ToString("F2"), CellValues.Number),
                 CreateCell(totalGainLoss.ToString("F2"), CellValues.Number),
+                CreateCell("", CellValues.String),
                 CreateCell("", CellValues.String),
                 CreateCell("", CellValues.String),
                 CreateCell("", CellValues.String)
@@ -131,6 +134,7 @@ public class ExportService
                 CreateCell("Name", CellValues.String),
                 CreateCell("Character", CellValues.String),
                 CreateCell("Deco", CellValues.String),
+                CreateCell("Classification", CellValues.String),
                 CreateCell("Manufacturer", CellValues.String),
                 CreateCell("Reissue", CellValues.String),
                 CreateCell("Stylized", CellValues.String),
@@ -147,6 +151,7 @@ public class ExportService
                 CreateCell("Example Item", CellValues.String),
                 CreateCell("Optimus Prime", CellValues.String),
                 CreateCell("G1", CellValues.String),
+                CreateCell("Official", CellValues.String),
                 CreateCell("Hasbro", CellValues.String),
                 CreateCell("No", CellValues.String),
                 CreateCell("No", CellValues.String),
@@ -229,13 +234,13 @@ public class ExportService
                     {
                         Name = name!,
                         Character = GetCellValue(workbookPart, cells, 1),
-                        Manufacturer = manufacturer!,
-                        Reissue = GetCellValue(workbookPart, cells, 4)?.ToLower() == "yes",
-                        Stylized = GetCellValue(workbookPart, cells, 5)?.ToLower() == "yes",
-                        OriginalPrice = ParseDecimal(GetCellValue(workbookPart, cells, 6)),
-                        CurrentValue = ParseDecimal(GetCellValue(workbookPart, cells, 7)),
-                        DateAcquired = ParseDate(GetCellValue(workbookPart, cells, 8)),
-                        Notes = GetCellValue(workbookPart, cells, 9),
+                        Manufacturer = GetCellValue(workbookPart, cells, 4),
+                        Reissue = GetCellValue(workbookPart, cells, 5)?.ToLower() == "yes",
+                        Stylized = GetCellValue(workbookPart, cells, 6)?.ToLower() == "yes",
+                        OriginalPrice = ParseDecimal(GetCellValue(workbookPart, cells, 7)),
+                        CurrentValue = ParseDecimal(GetCellValue(workbookPart, cells, 8)),
+                        DateAcquired = ParseDate(GetCellValue(workbookPart, cells, 9)),
+                        Notes = GetCellValue(workbookPart, cells, 10),
                         DateAdded = DateTime.Now
                     };
 
@@ -244,6 +249,13 @@ public class ExportService
                     if (!string.IsNullOrWhiteSpace(decoName))
                     {
                         item.DecoName = decoName;
+                    }
+
+                    // Store classification name temporarily (will be converted to ID later)
+                    var classificationName = GetCellValue(workbookPart, cells, 3);
+                    if (!string.IsNullOrWhiteSpace(classificationName))
+                    {
+                        item.ClassificationName = classificationName;
                     }
 
                     Console.WriteLine($"ParseImportFile: Row {rowNumber} - Item added: {item.Name}");
