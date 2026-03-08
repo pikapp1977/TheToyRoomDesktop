@@ -7,7 +7,6 @@
         WindowStartupLocation="CenterOwner"
         ResizeMode="CanResize"
         MinHeight="820"
-        Icon="../thetoyroom.ico"
         MinWidth="650"
         Background="#f8f9fa">
     <Grid>
