@@ -8,8 +8,11 @@ AppId={{C7D8E9F1-4A5B-6C7D-8E9F-0A1B2C3D4E5F}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 AppPublisher={#MyAppPublisher}
+; Use {autopf} which will default to Program Files on 64-bit systems
+; Falls back to user directory if no admin privileges
 DefaultDirName={autopf}\TheToyRoomDesktop
 DefaultGroupName={#MyAppName}
+; Allow user to change installation directory
 DisableDirPage=no
 DisableProgramGroupPage=yes
 UsePreviousAppDir=yes
@@ -18,7 +21,10 @@ OutputBaseFilename=TheToyRoomDesktopSetup_v{#MyAppVersion}
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
-PrivilegesRequired=lowest
+; Request admin privileges to install to Program Files
+; Change to 'lowest' if you want user-level installation
+PrivilegesRequired=admin
+PrivilegesRequiredOverridesAllowed=dialog
 ArchitecturesInstallIn64BitMode=x64
 MinVersion=10.0
 UninstallDisplayIcon={app}\{#MyAppExeName}
