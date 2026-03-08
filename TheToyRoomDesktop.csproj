@@ -12,6 +12,8 @@
     <Company>Personal</Company>
     <Description>A WPF application for managing collectible toy collections</Description>
     <ApplicationIcon>thetoyroom.ico</ApplicationIcon>
+    <!-- Force x64 to use x64 emulation on ARM64 Windows -->
+    <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
