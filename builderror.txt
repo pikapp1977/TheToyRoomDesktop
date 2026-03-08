@@ -1,4 +1,4 @@
-=====================================
+========================================
 TheToyRoomDesktop - Local Build
 ========================================
 
@@ -23,35 +23,48 @@ This will show any compilation errors...
 
 Restore complete (0.2s)
     info NETSDK1057: You are using a preview version of .NET. See: https://aka.ms/dotnet-support-policy
-  TheToyRoomDesktop net8.0-windows failed with 16 error(s) and 5 warning(s) (0.4s)
-    C:\Users\Admin\Documents\TheToyRoomDesktop\Views\ViewItemWindow.xaml.cs(30,59): error CS0103: The name 'File' does not exist in the current context
-    C:\Users\Admin\Documents\TheToyRoomDesktop\Views\ViewItemWindow.xaml.cs(36,44): warning CS8604: Possible null reference argument for parameter 'uriString' in 'Uri.Uri(string uriString, UriKind uriKind)'.
-    C:\Users\Admin\Documents\TheToyRoomDesktop\App.xaml.cs(19,27): error CS0103: The name 'Path' does not exist in the current context
-    C:\Users\Admin\Documents\TheToyRoomDesktop\App.xaml.cs(24,14): error CS0103: The name 'Directory' does not exist in the current context
-    C:\Users\Admin\Documents\TheToyRoomDesktop\App.xaml.cs(26,13): error CS0103: The name 'Directory' does not exist in the current context
-    C:\Users\Admin\Documents\TheToyRoomDesktop\App.xaml.cs(29,22): error CS0103: The name 'Path' does not exist in the current context
-    C:\Users\Admin\Documents\TheToyRoomDesktop\Views\SettingsPage.xaml.cs(24,31): error CS0103: The name 'Path' does not exist in the current context
-    C:\Users\Admin\Documents\TheToyRoomDesktop\Views\SettingsPage.xaml.cs(28,26): error CS0103: The name 'Path' does not exist in the current context
-    C:\Users\Admin\Documents\TheToyRoomDesktop\Views\SettingsPage.xaml.cs(33,17): error CS0103: The name 'File' does not exist in the current context
-    C:\Users\Admin\Documents\TheToyRoomDesktop\Views\SettingsPage.xaml.cs(35,36): error CS0246: The type or namespace name 'FileInfo' could not be found (are you missing a using directive or an assembly reference?)
-    C:\Users\Admin\Documents\TheToyRoomDesktop\Services\CollectibleService.cs(202,21): error CS0103: The name 'File' does not exist in the current context
-    C:\Users\Admin\Documents\TheToyRoomDesktop\Services\CollectibleService.cs(204,21): error CS0103: The name 'File' does not exist in the current context
+  TheToyRoomDesktop net8.0-windows succeeded with 4 warning(s) (0.7s) → bin\Debug\net8.0-windows\TheToyRoomDesktop.dll
     C:\Users\Admin\Documents\TheToyRoomDesktop\Services\ExportService.cs(49,13): warning CS8602: Dereference of a possibly null reference.
-    C:\Users\Admin\Documents\TheToyRoomDesktop\Views\AddItemPage.xaml.cs(126,13): error CS0103: The name 'File' does not exist in the current context
     C:\Users\Admin\Documents\TheToyRoomDesktop\Services\ExportService.cs(142,13): warning CS8602: Dereference of a possibly null reference.
-    C:\Users\Admin\Documents\TheToyRoomDesktop\Views\ImporterPage.xaml.cs(47,17): error CS0103: The name 'File' does not exist in the current context
-    C:\Users\Admin\Documents\TheToyRoomDesktop\Views\ImporterPage.xaml.cs(76,57): error CS0103: The name 'File' does not exist in the current context
-    C:\Users\Admin\Documents\TheToyRoomDesktop\Views\ImporterPage.xaml.cs(84,36): error CS0103: The name 'File' does not exist in the current context
-    C:\Users\Admin\Documents\TheToyRoomDesktop\Views\ReportsPage.xaml.cs(124,23): error CS0103: The name 'File' does not exist in the current context
     C:\Users\Admin\Documents\TheToyRoomDesktop\Services\ExportService.cs(230,32): warning CS8601: Possible null reference assignment.
     C:\Users\Admin\Documents\TheToyRoomDesktop\Services\ExportService.cs(232,40): warning CS8601: Possible null reference assignment.
 
-Build failed with 16 error(s) and 5 warning(s) in 1.0s
+Build succeeded with 4 warning(s) in 1.2s
+[OK] Debug build complete
 
-[ERROR] Build failed!
+[4/5] Building Release configuration...
+Restore complete (0.3s)
+    info NETSDK1057: You are using a preview version of .NET. See: https://aka.ms/dotnet-support-policy
+  TheToyRoomDesktop net8.0-windows win-x64 succeeded with 4 warning(s) (1.3s) → bin\Release\net8.0-windows\win-x64\TheToyRoomDesktop.dll
+    C:\Users\Admin\Documents\TheToyRoomDesktop\Services\ExportService.cs(49,13): warning CS8602: Dereference of a possibly null reference.
+    C:\Users\Admin\Documents\TheToyRoomDesktop\Services\ExportService.cs(142,13): warning CS8602: Dereference of a possibly null reference.
+    C:\Users\Admin\Documents\TheToyRoomDesktop\Services\ExportService.cs(230,32): warning CS8601: Possible null reference assignment.
+    C:\Users\Admin\Documents\TheToyRoomDesktop\Services\ExportService.cs(232,40): warning CS8601: Possible null reference assignment.
 
-The errors above show exactly what needs to be fixed.
+Build succeeded with 4 warning(s) in 2.0s
+[OK] Release build complete
 
-Save the error messages and we can fix them!
+[5/5] Publishing application...
+Restore complete (0.4s)
+    info NETSDK1057: You are using a preview version of .NET. See: https://aka.ms/dotnet-support-policy
+  TheToyRoomDesktop net8.0-windows win-x64 succeeded (1.4s) → bin\Release\net8.0-windows\win-x64\publish\
+
+Build succeeded in 2.2s
+[OK] Publish complete
+
+========================================
+BUILD SUCCESSFUL!
+========================================
+
+Output files:
+ - Debug:   bin\Debug\net8.0-windows\TheToyRoomDesktop.exe
+ - Release: bin\Release\net8.0-windows\TheToyRoomDesktop.exe
+ - Publish: bin\Release\net8.0-windows\win-x64\publish\TheToyRoomDesktop.exe
+
+To run the application:
+  bin\Debug\net8.0-windows\TheToyRoomDesktop.exe
+
+Or run the published version (single file):
+  bin\Release\net8.0-windows\win-x64\publish\TheToyRoomDesktop.exe
 
 Press any key to continue . . .

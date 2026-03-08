@@ -2,6 +2,7 @@
 #define MyAppVersion "1.0.0"
 #define MyAppPublisher "Personal"
 #define MyAppExeName "TheToyRoomDesktop.exe"
+#define MyAppIconName "thetoyroom.ico"
 
 [Setup]
 AppId={{C7D8E9F1-4A5B-6C7D-8E9F-0A1B2C3D4E5F}
@@ -27,6 +28,8 @@ PrivilegesRequired=admin
 PrivilegesRequiredOverridesAllowed=dialog
 ArchitecturesInstallIn64BitMode=x64
 MinVersion=10.0
+; Set the installer and uninstaller icons
+SetupIconFile={#MyAppIconName}
 UninstallDisplayIcon={app}\{#MyAppExeName}
 
 [Languages]
@@ -37,11 +40,12 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 
 [Files]
 Source: "bin\Release\net8.0-windows\win-x64\publish\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#MyAppIconName}"; DestDir: "{app}"; Flags: ignoreversion
 
 [Icons]
-Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
+Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; IconFilename: "{app}\{#MyAppIconName}"
 Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"
-Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
+Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; IconFilename: "{app}\{#MyAppIconName}"; Tasks: desktopicon
 
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
