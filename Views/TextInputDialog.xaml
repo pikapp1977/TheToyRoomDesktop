@@ -6,7 +6,6 @@
         Width="400"
         WindowStartupLocation="CenterOwner"
         ResizeMode="NoResize"
-        Icon="../thetoyroom.ico"
         Background="#f8f9fa">
     <Grid Margin="20">
         <Grid.RowDefinitions>
