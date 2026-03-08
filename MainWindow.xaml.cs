@@ -24,7 +24,21 @@ public partial class MainWindow : Window
 
     private void AddItem_Click(object sender, RoutedEventArgs e)
     {
-        MainFrame.Navigate(new AddItemPage());
+        var addItemWindow = new AddItemWindow();
+        addItemWindow.Owner = this;
+        if (addItemWindow.ShowDialog() == true && addItemWindow.ItemSaved)
+        {
+            // Refresh the current page if it's the Collection page
+            if (MainFrame.Content is CollectionPage collectionPage)
+            {
+                collectionPage.RefreshCollection();
+            }
+            else if (MainFrame.Content is HomePage homePage)
+            {
+                // Navigate to collection to show the new item
+                MainFrame.Navigate(new CollectionPage());
+            }
+        }
     }
 
     private void Reports_Click(object sender, RoutedEventArgs e)

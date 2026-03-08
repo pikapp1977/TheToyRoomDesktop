@@ -1,0 +1,117 @@
+<Window x:Class="TheToyRoomDesktop.Views.AddItemWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Add/Edit Item"
+        Height="700"
+        Width="650"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        Background="#f8f9fa">
+    <Grid>
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="20">
+                <TextBlock x:Name="TitleText" Text="Add New Item" FontSize="28" FontWeight="Bold" Foreground="#6f42c1" Margin="0,0,0,20"/>
+                
+                <Border Background="White" BorderBrush="#dee2e6" BorderThickness="1" CornerRadius="8" Padding="20">
+                    <StackPanel>
+                        <!-- Name -->
+                        <TextBlock Text="Name *" FontWeight="Bold" Margin="0,0,0,5"/>
+                        <TextBox x:Name="NameBox" Padding="8" Margin="0,0,0,15"/>
+                        
+                        <!-- Character -->
+                        <TextBlock Text="Character" FontWeight="Bold" Margin="0,0,0,5"/>
+                        <TextBox x:Name="CharacterBox" Padding="8" Margin="0,0,0,15"/>
+                        
+                        <!-- Manufacturer -->
+                        <TextBlock Text="Manufacturer *" FontWeight="Bold" Margin="0,0,0,5"/>
+                        <ComboBox x:Name="ManufacturerComboBox" 
+                                  IsEditable="True" 
+                                  Padding="8" 
+                                  Margin="0,0,0,15"
+                                  TextBoxBase.TextChanged="ManufacturerComboBox_TextChanged"/>
+                        
+                        <!-- Deco -->
+                        <TextBlock Text="Deco" FontWeight="Bold" Margin="0,0,0,5"/>
+                        <ComboBox x:Name="DecoComboBox" 
+                                  IsEditable="True" 
+                                  Padding="8" 
+                                  Margin="0,0,0,15"
+                                  TextBoxBase.TextChanged="DecoComboBox_TextChanged"/>
+                        
+                        <!-- Checkboxes -->
+                        <Grid Margin="0,0,0,15">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <CheckBox x:Name="ReissueCheckBox" Content="Reissue" Grid.Column="0" VerticalAlignment="Center"/>
+                            <CheckBox x:Name="StylizedCheckBox" Content="Stylized" Grid.Column="1" VerticalAlignment="Center"/>
+                        </Grid>
+                        
+                        <!-- Prices -->
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="20"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="Original Price" FontWeight="Bold" Margin="0,0,0,5"/>
+                                <TextBox x:Name="OriginalPriceBox" Padding="8"/>
+                            </StackPanel>
+                            
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="Current Value" FontWeight="Bold" Margin="0,0,0,5"/>
+                                <TextBox x:Name="CurrentValueBox" Padding="8"/>
+                            </StackPanel>
+                        </Grid>
+                        
+                        <!-- Date Acquired -->
+                        <TextBlock Text="Date Acquired" FontWeight="Bold" Margin="0,15,0,5"/>
+                        <DatePicker x:Name="DateAcquiredPicker" Padding="8" Margin="0,0,0,15"/>
+                        
+                        <!-- Image -->
+                        <TextBlock Text="Image" FontWeight="Bold" Margin="0,0,0,5"/>
+                        <Grid Margin="0,0,0,15">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox x:Name="ImagePathBox" Grid.Column="0" Padding="8" IsReadOnly="True"/>
+                            <Button Grid.Column="1" Content="Browse..." Click="BrowseImage_Click" Margin="10,0,0,0" Padding="15,8"/>
+                        </Grid>
+                        
+                        <!-- Image Preview -->
+                        <Border x:Name="ImagePreviewBorder" 
+                                Background="White" 
+                                BorderBrush="#dee2e6" 
+                                BorderThickness="1" 
+                                CornerRadius="4" 
+                                Padding="10" 
+                                Margin="0,0,0,15"
+                                Visibility="Collapsed">
+                            <Image x:Name="ImagePreview" MaxHeight="200" Stretch="Uniform"/>
+                        </Border>
+                        
+                        <!-- Notes -->
+                        <TextBlock Text="Notes" FontWeight="Bold" Margin="0,0,0,5"/>
+                        <TextBox x:Name="NotesBox" 
+                                 Padding="8" 
+                                 TextWrapping="Wrap" 
+                                 AcceptsReturn="True" 
+                                 Height="100" 
+                                 VerticalScrollBarVisibility="Auto"
+                                 Margin="0,0,0,15"/>
+                        
+                        <!-- Buttons -->
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0">
+                            <Button x:Name="SaveButton" Content="Save Item" Click="Save_Click" Padding="30,10" Margin="0,0,10,0"/>
+                            <Button Content="Cancel" Click="Cancel_Click" Padding="30,10" Background="#6c757d"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Window>

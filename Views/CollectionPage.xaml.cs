@@ -33,6 +33,12 @@ public partial class CollectionPage : Page
         }
     }
 
+    public async void RefreshCollection()
+    {
+        await LoadCollectibles();
+        SearchBox.Text = "";
+    }
+
     private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
     {
         var searchTerm = SearchBox.Text.ToLower();
@@ -67,6 +73,7 @@ public partial class CollectionPage : Page
             if (item != null)
             {
                 var viewWindow = new ViewItemWindow(item);
+                viewWindow.Owner = Window.GetWindow(this);
                 viewWindow.ShowDialog();
             }
         }
@@ -79,7 +86,12 @@ public partial class CollectionPage : Page
             var item = _allCollectibles.FirstOrDefault(c => c.Id == id);
             if (item != null)
             {
-                NavigationService?.Navigate(new AddItemPage(item));
+                var editWindow = new AddItemWindow(item);
+                editWindow.Owner = Window.GetWindow(this);
+                if (editWindow.ShowDialog() == true && editWindow.ItemSaved)
+                {
+                    RefreshCollection();
+                }
             }
         }
     }
@@ -120,6 +132,7 @@ public partial class CollectionPage : Page
         if (CollectionGrid.SelectedItem is Collectible item)
         {
             var viewWindow = new ViewItemWindow(item);
+            viewWindow.Owner = Window.GetWindow(this);
             viewWindow.ShowDialog();
         }
     }
