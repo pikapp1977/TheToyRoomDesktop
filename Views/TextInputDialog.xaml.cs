@@ -15,6 +15,12 @@ public partial class TextInputDialog : Window
         ResponseTextBox.Focus();
     }
 
+    public void SetInitialValue(string value)
+    {
+        ResponseTextBox.Text = value;
+        ResponseTextBox.SelectAll();
+    }
+
     private void OK_Click(object sender, RoutedEventArgs e)
     {
         DialogResult = true;

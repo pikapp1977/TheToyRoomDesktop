@@ -67,10 +67,13 @@
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*"/>
                             <DataGridTextColumn Header="Date Added" Binding="{Binding DateAdded, StringFormat='{}{0:MM/dd/yyyy}'}" Width="120"/>
-                            <DataGridTemplateColumn Header="Actions" Width="100">
+                            <DataGridTemplateColumn Header="Actions" Width="150">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <Button Content="Delete" Click="DeleteManufacturer_Click" Tag="{Binding Id}" Padding="10,5" Background="#dc3545" Foreground="White"/>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Button Content="Edit" Click="EditManufacturer_Click" Tag="{Binding Id}" Padding="8,5" Background="#007bff" Foreground="White" Margin="0,0,5,0"/>
+                                            <Button Content="Delete" Click="DeleteManufacturer_Click" Tag="{Binding Id}" Padding="8,5" Background="#dc3545" Foreground="White"/>
+                                        </StackPanel>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
@@ -101,10 +104,13 @@
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*"/>
                             <DataGridTextColumn Header="Date Added" Binding="{Binding DateAdded, StringFormat='{}{0:MM/dd/yyyy}'}" Width="120"/>
-                            <DataGridTemplateColumn Header="Actions" Width="100">
+                            <DataGridTemplateColumn Header="Actions" Width="150">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <Button Content="Delete" Click="DeleteDeco_Click" Tag="{Binding Id}" Padding="10,5" Background="#dc3545" Foreground="White"/>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Button Content="Edit" Click="EditDeco_Click" Tag="{Binding Id}" Padding="8,5" Background="#007bff" Foreground="White" Margin="0,0,5,0"/>
+                                            <Button Content="Delete" Click="DeleteDeco_Click" Tag="{Binding Id}" Padding="8,5" Background="#dc3545" Foreground="White"/>
+                                        </StackPanel>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>

@@ -95,3 +95,19 @@ public class ManufacturerService
         await command.ExecuteNonQueryAsync();
     }
 }
+
+    public async Task UpdateManufacturerAsync(Manufacturer manufacturer)
+    {
+        using var connection = _databaseService.GetConnection();
+        await connection.OpenAsync();
+
+        var query = @"UPDATE Manufacturers 
+                     SET Name = @Name
+                     WHERE Id = @Id";
+
+        using var command = new SQLiteCommand(query, connection);
+        command.Parameters.AddWithValue("@Id", manufacturer.Id);
+        command.Parameters.AddWithValue("@Name", manufacturer.Name.Trim());
+
+        await command.ExecuteNonQueryAsync();
+    }

@@ -94,3 +94,19 @@ public class DecoService
         await command.ExecuteNonQueryAsync();
     }
 }
+
+    public async Task UpdateDecoAsync(Deco deco)
+    {
+        using var connection = _databaseService.GetConnection();
+        await connection.OpenAsync();
+
+        var query = @"UPDATE Decos 
+                     SET Name = @Name
+                     WHERE Id = @Id";
+
+        using var command = new SQLiteCommand(query, connection);
+        command.Parameters.AddWithValue("@Id", deco.Id);
+        command.Parameters.AddWithValue("@Name", deco.Name.Trim());
+
+        await command.ExecuteNonQueryAsync();
+    }

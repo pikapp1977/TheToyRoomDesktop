@@ -97,6 +97,81 @@ public partial class SettingsPage : Page
         }
     }
 
+    private async void EditManufacturer_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is Button button && button.Tag is int id)
+        {
+            var manufacturers = await App.ManufacturerService!.GetAllManufacturersAsync();
+            var manufacturer = manufacturers.FirstOrDefault(m => m.Id == id);
+            
+            if (manufacturer != null)
+            {
+                var dialog = new TextInputDialog("Edit Manufacturer", $"Edit manufacturer name:");
+                dialog.Owner = Window.GetWindow(this);
+                dialog.SetInitialValue(manufacturer.Name);
+                
+                if (dialog.ShowDialog() == true && !string.IsNullOrWhiteSpace(dialog.ResponseText))
+                {
+                    var newName = dialog.ResponseText.Trim();
+                    
+                    // Check if unchanged
+                    if (newName.Equals(manufacturer.Name, StringComparison.OrdinalIgnoreCase))
+                    {
+                        return; // No change
+                    }
+                    
+                    // Check if new name already exists
+                    var existing = await App.ManufacturerService!.GetManufacturerByNameAsync(newName);
+                    if (existing != null && existing.Id != id)
+                    {
+                        MessageBox.Show($"Manufacturer '{newName}' already exists.", "Duplicate", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        return;
+                    }
+                    
+                    try
+                    {
+                        // Update all collectibles that use this manufacturer
+                        var collectibles = await App.CollectibleService!.GetAllCollectiblesAsync();
+                        var affectedItems = collectibles.Where(c => c.Manufacturer.Equals(manufacturer.Name, StringComparison.OrdinalIgnoreCase)).ToList();
+                        
+                        var confirmMessage = affectedItems.Count > 0 
+                            ? $"This will update {affectedItems.Count} collectible(s) from '{manufacturer.Name}' to '{newName}'.\n\nContinue?"
+                            : $"Rename '{manufacturer.Name}' to '{newName}'?";
+                        
+                        var result = MessageBox.Show(
+                            confirmMessage,
+                            "Confirm Rename",
+                            MessageBoxButton.YesNo,
+                            MessageBoxImage.Question
+                        );
+                        
+                        if (result == MessageBoxResult.Yes)
+                        {
+                            // Update the manufacturer name in the lookup table
+                            var oldName = manufacturer.Name;
+                            manufacturer.Name = newName;
+                            await App.ManufacturerService!.UpdateManufacturerAsync(manufacturer);
+                            
+                            // Update all collectibles with the old name
+                            foreach (var item in affectedItems)
+                            {
+                                item.Manufacturer = newName;
+                                await App.CollectibleService!.UpdateCollectibleAsync(item);
+                            }
+                            
+                            await LoadSettings();
+                            MessageBox.Show($"Successfully renamed to '{newName}' and updated {affectedItems.Count} collectible(s)!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Error renaming manufacturer: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+            }
+        }
+    }
+
     private async void DeleteManufacturer_Click(object sender, RoutedEventArgs e)
     {
         if (sender is Button button && button.Tag is int id)
@@ -113,7 +188,7 @@ public partial class SettingsPage : Page
                 if (inUse)
                 {
                     MessageBox.Show(
-                        $"Cannot delete '{manufacturer.Name}' because it is used by one or more collectibles.",
+                        $"Cannot delete '{manufacturer.Name}' because it is used by one or more collectibles.\n\nTip: Use 'Edit' to rename it instead.",
                         "Cannot Delete",
                         MessageBoxButton.OK,
                         MessageBoxImage.Warning
@@ -175,6 +250,73 @@ public partial class SettingsPage : Page
         }
     }
 
+    private async void EditDeco_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is Button button && button.Tag is int id)
+        {
+            var decos = await App.DecoService!.GetAllDecosAsync();
+            var deco = decos.FirstOrDefault(d => d.Id == id);
+            
+            if (deco != null)
+            {
+                var dialog = new TextInputDialog("Edit Deco", $"Edit deco name:");
+                dialog.Owner = Window.GetWindow(this);
+                dialog.SetInitialValue(deco.Name);
+                
+                if (dialog.ShowDialog() == true && !string.IsNullOrWhiteSpace(dialog.ResponseText))
+                {
+                    var newName = dialog.ResponseText.Trim();
+                    
+                    // Check if unchanged
+                    if (newName.Equals(deco.Name, StringComparison.OrdinalIgnoreCase))
+                    {
+                        return; // No change
+                    }
+                    
+                    // Check if new name already exists
+                    var existing = await App.DecoService!.GetDecoByNameAsync(newName);
+                    if (existing != null && existing.Id != id)
+                    {
+                        MessageBox.Show($"Deco '{newName}' already exists.", "Duplicate", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        return;
+                    }
+                    
+                    try
+                    {
+                        // Count affected collectibles
+                        var collectibles = await App.CollectibleService!.GetAllCollectiblesAsync();
+                        var affectedCount = collectibles.Count(c => c.DecoId == id);
+                        
+                        var confirmMessage = affectedCount > 0 
+                            ? $"This will update {affectedCount} collectible(s) from '{deco.Name}' to '{newName}'.\n\nContinue?"
+                            : $"Rename '{deco.Name}' to '{newName}'?";
+                        
+                        var result = MessageBox.Show(
+                            confirmMessage,
+                            "Confirm Rename",
+                            MessageBoxButton.YesNo,
+                            MessageBoxImage.Question
+                        );
+                        
+                        if (result == MessageBoxResult.Yes)
+                        {
+                            // Update the deco name (foreign key relationship handles collectibles automatically)
+                            deco.Name = newName;
+                            await App.DecoService!.UpdateDecoAsync(deco);
+                            
+                            await LoadSettings();
+                            MessageBox.Show($"Successfully renamed to '{newName}'! {affectedCount} collectible(s) updated.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Error renaming deco: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+            }
+        }
+    }
+
     private async void DeleteDeco_Click(object sender, RoutedEventArgs e)
     {
         if (sender is Button button && button.Tag is int id)
@@ -191,7 +333,7 @@ public partial class SettingsPage : Page
                 if (inUse)
                 {
                     MessageBox.Show(
-                        $"Cannot delete '{deco.Name}' because it is used by one or more collectibles.",
+                        $"Cannot delete '{deco.Name}' because it is used by one or more collectibles.\n\nTip: Use 'Edit' to rename it instead.",
                         "Cannot Delete",
                         MessageBoxButton.OK,
                         MessageBoxImage.Warning
