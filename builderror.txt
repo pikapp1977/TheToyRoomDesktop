@@ -23,48 +23,18 @@ This will show any compilation errors...
 
 Restore complete (0.2s)
     info NETSDK1057: You are using a preview version of .NET. See: https://aka.ms/dotnet-support-policy
-  TheToyRoomDesktop net8.0-windows succeeded with 4 warning(s) (0.7s) → bin\Debug\net8.0-windows\TheToyRoomDesktop.dll
-    C:\Users\Admin\Documents\TheToyRoomDesktop\Services\ExportService.cs(49,13): warning CS8602: Dereference of a possibly null reference.
-    C:\Users\Admin\Documents\TheToyRoomDesktop\Services\ExportService.cs(142,13): warning CS8602: Dereference of a possibly null reference.
-    C:\Users\Admin\Documents\TheToyRoomDesktop\Services\ExportService.cs(230,32): warning CS8601: Possible null reference assignment.
-    C:\Users\Admin\Documents\TheToyRoomDesktop\Services\ExportService.cs(232,40): warning CS8601: Possible null reference assignment.
+  TheToyRoomDesktop net8.0-windows failed with 4 error(s) (0.3s)
+    C:\Users\Admin\Documents\TheToyRoomDesktop\Services\ManufacturerService.cs(97,1): error CS1519: Invalid token '}' in a member declaration
+    C:\Users\Admin\Documents\TheToyRoomDesktop\Services\DecoService.cs(96,1): error CS1519: Invalid token '}' in a member declaration
+    C:\Users\Admin\Documents\TheToyRoomDesktop\Services\ManufacturerService.cs(113,6): error CS1513: } expected
+    C:\Users\Admin\Documents\TheToyRoomDesktop\Services\DecoService.cs(112,6): error CS1513: } expected
 
-Build succeeded with 4 warning(s) in 1.2s
-[OK] Debug build complete
+Build failed with 4 error(s) in 0.8s
 
-[4/5] Building Release configuration...
-Restore complete (0.3s)
-    info NETSDK1057: You are using a preview version of .NET. See: https://aka.ms/dotnet-support-policy
-  TheToyRoomDesktop net8.0-windows win-x64 succeeded with 4 warning(s) (1.3s) → bin\Release\net8.0-windows\win-x64\TheToyRoomDesktop.dll
-    C:\Users\Admin\Documents\TheToyRoomDesktop\Services\ExportService.cs(49,13): warning CS8602: Dereference of a possibly null reference.
-    C:\Users\Admin\Documents\TheToyRoomDesktop\Services\ExportService.cs(142,13): warning CS8602: Dereference of a possibly null reference.
-    C:\Users\Admin\Documents\TheToyRoomDesktop\Services\ExportService.cs(230,32): warning CS8601: Possible null reference assignment.
-    C:\Users\Admin\Documents\TheToyRoomDesktop\Services\ExportService.cs(232,40): warning CS8601: Possible null reference assignment.
+[ERROR] Build failed!
 
-Build succeeded with 4 warning(s) in 2.0s
-[OK] Release build complete
+The errors above show exactly what needs to be fixed.
 
-[5/5] Publishing application...
-Restore complete (0.4s)
-    info NETSDK1057: You are using a preview version of .NET. See: https://aka.ms/dotnet-support-policy
-  TheToyRoomDesktop net8.0-windows win-x64 succeeded (1.4s) → bin\Release\net8.0-windows\win-x64\publish\
-
-Build succeeded in 2.2s
-[OK] Publish complete
-
-========================================
-BUILD SUCCESSFUL!
-========================================
-
-Output files:
- - Debug:   bin\Debug\net8.0-windows\TheToyRoomDesktop.exe
- - Release: bin\Release\net8.0-windows\TheToyRoomDesktop.exe
- - Publish: bin\Release\net8.0-windows\win-x64\publish\TheToyRoomDesktop.exe
-
-To run the application:
-  bin\Debug\net8.0-windows\TheToyRoomDesktop.exe
-
-Or run the published version (single file):
-  bin\Release\net8.0-windows\win-x64\publish\TheToyRoomDesktop.exe
+Save the error messages and we can fix them!
 
 Press any key to continue . . .

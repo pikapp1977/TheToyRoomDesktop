@@ -8,6 +8,7 @@
         ResizeMode="CanResize"
         MinHeight="820"
         MinWidth="650"
+        Icon="pack://application:,,,/thetoyroom.ico"
         Background="#f8f9fa">
     <Grid>
         <ScrollViewer VerticalScrollBarVisibility="Auto">
