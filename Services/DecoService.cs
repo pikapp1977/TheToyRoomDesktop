@@ -82,19 +82,6 @@ public class DecoService
         return Convert.ToInt32(result);
     }
 
-    public async Task DeleteDecoAsync(int id)
-    {
-        using var connection = _databaseService.GetConnection();
-        await connection.OpenAsync();
-
-        var query = "DELETE FROM Decos WHERE Id = @Id";
-        using var command = new SQLiteCommand(query, connection);
-        command.Parameters.AddWithValue("@Id", id);
-
-        await command.ExecuteNonQueryAsync();
-    }
-}
-
     public async Task UpdateDecoAsync(Deco deco)
     {
         using var connection = _databaseService.GetConnection();
@@ -110,3 +97,16 @@ public class DecoService
 
         await command.ExecuteNonQueryAsync();
     }
+
+    public async Task DeleteDecoAsync(int id)
+    {
+        using var connection = _databaseService.GetConnection();
+        await connection.OpenAsync();
+
+        var query = "DELETE FROM Decos WHERE Id = @Id";
+        using var command = new SQLiteCommand(query, connection);
+        command.Parameters.AddWithValue("@Id", id);
+
+        await command.ExecuteNonQueryAsync();
+    }
+}

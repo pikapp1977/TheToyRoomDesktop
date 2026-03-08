@@ -83,19 +83,6 @@ public class ManufacturerService
         return Convert.ToInt32(result);
     }
 
-    public async Task DeleteManufacturerAsync(int id)
-    {
-        using var connection = _databaseService.GetConnection();
-        await connection.OpenAsync();
-
-        var query = "DELETE FROM Manufacturers WHERE Id = @Id";
-        using var command = new SQLiteCommand(query, connection);
-        command.Parameters.AddWithValue("@Id", id);
-
-        await command.ExecuteNonQueryAsync();
-    }
-}
-
     public async Task UpdateManufacturerAsync(Manufacturer manufacturer)
     {
         using var connection = _databaseService.GetConnection();
@@ -111,3 +98,16 @@ public class ManufacturerService
 
         await command.ExecuteNonQueryAsync();
     }
+
+    public async Task DeleteManufacturerAsync(int id)
+    {
+        using var connection = _databaseService.GetConnection();
+        await connection.OpenAsync();
+
+        var query = "DELETE FROM Manufacturers WHERE Id = @Id";
+        using var command = new SQLiteCommand(query, connection);
+        command.Parameters.AddWithValue("@Id", id);
+
+        await command.ExecuteNonQueryAsync();
+    }
+}
