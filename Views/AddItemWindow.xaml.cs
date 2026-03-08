@@ -107,6 +107,66 @@ public partial class AddItemWindow : Window
         DecoComboBox.ItemsSource = filtered;
     }
 
+    private async void AddManufacturer_Click(object sender, RoutedEventArgs e)
+    {
+        var dialog = new TextInputDialog("Add New Manufacturer", "Enter manufacturer name:");
+        if (dialog.ShowDialog() == true && !string.IsNullOrWhiteSpace(dialog.ResponseText))
+        {
+            var manufacturerName = dialog.ResponseText.Trim();
+            
+            // Check if it already exists
+            var existing = await App.ManufacturerService!.GetManufacturerByNameAsync(manufacturerName);
+            if (existing != null)
+            {
+                MessageBox.Show($"Manufacturer '{manufacturerName}' already exists.", "Duplicate", MessageBoxButton.OK, MessageBoxImage.Information);
+                ManufacturerComboBox.Text = manufacturerName;
+                return;
+            }
+            
+            try
+            {
+                await App.ManufacturerService!.AddManufacturerAsync(manufacturerName);
+                await LoadDropdownData(); // Refresh the list
+                ManufacturerComboBox.Text = manufacturerName; // Select the new one
+                MessageBox.Show($"Manufacturer '{manufacturerName}' added successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error adding manufacturer: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+    }
+
+    private async void AddDeco_Click(object sender, RoutedEventArgs e)
+    {
+        var dialog = new TextInputDialog("Add New Deco", "Enter deco name:");
+        if (dialog.ShowDialog() == true && !string.IsNullOrWhiteSpace(dialog.ResponseText))
+        {
+            var decoName = dialog.ResponseText.Trim();
+            
+            // Check if it already exists
+            var existing = await App.DecoService!.GetDecoByNameAsync(decoName);
+            if (existing != null)
+            {
+                MessageBox.Show($"Deco '{decoName}' already exists.", "Duplicate", MessageBoxButton.OK, MessageBoxImage.Information);
+                DecoComboBox.Text = decoName;
+                return;
+            }
+            
+            try
+            {
+                await App.DecoService!.AddDecoAsync(decoName);
+                await LoadDropdownData(); // Refresh the list
+                DecoComboBox.Text = decoName; // Select the new one
+                MessageBox.Show($"Deco '{decoName}' added successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error adding deco: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+    }
+
     private void BrowseImage_Click(object sender, RoutedEventArgs e)
     {
         var dialog = new OpenFileDialog

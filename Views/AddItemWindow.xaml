@@ -7,6 +7,7 @@
         WindowStartupLocation="CenterOwner"
         ResizeMode="CanResize"
         MinHeight="820"
+        Icon="../thetoyroom.ico"
         MinWidth="650"
         Background="#f8f9fa">
     <Grid>
@@ -24,21 +25,53 @@
                         <TextBlock Text="Character" FontWeight="Bold" Margin="0,0,0,5"/>
                         <TextBox x:Name="CharacterBox" Padding="8" Margin="0,0,0,12"/>
                         
-                        <!-- Manufacturer -->
+                        <!-- Manufacturer with Add button -->
                         <TextBlock Text="Manufacturer *" FontWeight="Bold" Margin="0,0,0,5"/>
-                        <ComboBox x:Name="ManufacturerComboBox" 
-                                  IsEditable="True" 
-                                  Padding="8" 
-                                  Margin="0,0,0,12"
-                                  TextBoxBase.TextChanged="ManufacturerComboBox_TextChanged"/>
+                        <Grid Margin="0,0,0,12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <ComboBox x:Name="ManufacturerComboBox" 
+                                      Grid.Column="0"
+                                      IsEditable="True" 
+                                      Padding="8"
+                                      TextBoxBase.TextChanged="ManufacturerComboBox_TextChanged"/>
+                            <Button Grid.Column="1" 
+                                    Content="+" 
+                                    Click="AddManufacturer_Click" 
+                                    Margin="5,0,0,0" 
+                                    Padding="12,8"
+                                    FontSize="16"
+                                    FontWeight="Bold"
+                                    ToolTip="Add new manufacturer"
+                                    Background="#28a745"
+                                    Foreground="White"/>
+                        </Grid>
                         
-                        <!-- Deco -->
+                        <!-- Deco with Add button -->
                         <TextBlock Text="Deco" FontWeight="Bold" Margin="0,0,0,5"/>
-                        <ComboBox x:Name="DecoComboBox" 
-                                  IsEditable="True" 
-                                  Padding="8" 
-                                  Margin="0,0,0,12"
-                                  TextBoxBase.TextChanged="DecoComboBox_TextChanged"/>
+                        <Grid Margin="0,0,0,12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <ComboBox x:Name="DecoComboBox" 
+                                      Grid.Column="0"
+                                      IsEditable="True" 
+                                      Padding="8"
+                                      TextBoxBase.TextChanged="DecoComboBox_TextChanged"/>
+                            <Button Grid.Column="1" 
+                                    Content="+" 
+                                    Click="AddDeco_Click" 
+                                    Margin="5,0,0,0" 
+                                    Padding="12,8"
+                                    FontSize="16"
+                                    FontWeight="Bold"
+                                    ToolTip="Add new deco"
+                                    Background="#28a745"
+                                    Foreground="White"/>
+                        </Grid>
                         
                         <!-- Checkboxes -->
                         <Grid Margin="0,0,0,12">
