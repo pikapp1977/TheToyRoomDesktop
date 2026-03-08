@@ -6,8 +6,8 @@
         Width="400"
         WindowStartupLocation="CenterOwner"
         ResizeMode="NoResize"
-        Background="#f8f9fa">
         Icon="pack://application:,,,/thetoyroom.ico"
+        Background="#f8f9fa">
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
